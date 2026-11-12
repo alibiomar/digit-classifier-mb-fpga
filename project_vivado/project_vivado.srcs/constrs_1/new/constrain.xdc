@@ -1,0 +1,1 @@
+set_property -dict {PACKAGE_PIN H5 IOSTANDARD LVCMOS33} [get_ports init_calib_complete_0]

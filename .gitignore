@@ -1,0 +1,104 @@
+# Operating-system and editor files
+.DS_Store
+Thumbs.db
+.analytics
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# Credentials and local configuration
+kaggle.json
+.env
+.env.*
+!.env.example
+
+# Python caches and local environments
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.venv/
+venv/
+env/
+
+# Generic build products
+*.o
+*.obj
+*.d
+*.a
+*.so
+*.dll
+*.exe
+
+# Logs and temporary files
+*.log
+*.jou
+*.str
+*.tmp
+*.bak
+*.swp
+RemoteSystemsTempFiles/
+.metadata/
+
+# Vitis application and platform outputs
+digitClass/Debug/
+digitClass/Release/
+digitClass/_ide/
+digitClass_system/Debug/
+digitClass_system/Release/
+digitClass_system/_ide/
+digitClassifier_vitis/export/
+digitClassifier_vitis/hw/
+digitClassifier_vitis/logs/
+digitClassifier_vitis/microblaze_0/
+digitClassifier_vitis/resources/
+digitClassifier_vitis/tempdsa/
+digitClassifier_vitis/.log/
+
+# Vitis/HLS generated outputs
+digitclassifier/solution1/.autopilot/
+digitclassifier/solution1/csim/
+digitclassifier/solution1/impl/
+digitclassifier/solution1/syn/verilog/
+digitclassifier/solution1/syn/report/*.xml
+digitclassifier/solution1/syn/report/*.json
+digitclassifier/solution1/solution1.log
+digitclassifier/solution1/*.aps
+digitclassifier/solution1/*.directive
+digitclassifier/solution1/*.data.json
+
+# Vivado generated caches, runs, simulation products, and generated IP data
+project_vivado/project_vivado.cache/
+project_vivado/project_vivado.gen/
+project_vivado/project_vivado.hw/
+project_vivado/project_vivado.runs/
+project_vivado/project_vivado.sim/
+project_vivado/project_vivado.ip_user_files/
+project_vivado/project_vivado.srcs/utils_1/
+
+# FPGA build artifacts and packaged archives
+*.bit
+*.bin
+*.elf
+*.xsa
+*.mmi
+*.dcp
+*.zip
+
+# Keep the small, intentional test vectors despite the generic binary rule.
+!digitclassifier/test_set.bin
+!modelTrain/test_set.bin
+
+# Local demo recordings and generated previews
+test/testVideo.mp4
+test/sent.png
+
+# Keep project documentation and checked-in measurement reports.
+!project_vivado/utilization_report.txt
+!digitclassifier/solution1/syn/report/
+!digitclassifier/solution1/syn/report/*.rpt
+
+# Keep the board/demo assets.
+!images/
+!images/**

@@ -1,0 +1,234 @@
+
+
+================================================================
+== Synthesis Summary Report of 'digit_mlp'
+================================================================
++ General Information: 
+    * Date:           Thu Nov 12 01:45:19 2026
+    * Version:        2023.1 (Build 3854077 on May  4 2023)
+    * Project:        digitclassifier
+    * Solution:       solution1 (Vivado IP Flow Target)
+    * Product family: artix7
+    * Target device:  xc7a35ti-csg324-1L
+    
+
++ Performance & Resource Estimates: 
+    
+    PS: '+' for module; 'o' for loop; '*' for dataflow
+    +----------------------------------------+------+------+---------+-----------+----------+---------+------+----------+----------+----------+-----------+------------+-----+
+    |                 Modules                | Issue|      | Latency |  Latency  | Iteration|         | Trip |          |          |          |           |            |     |
+    |                 & Loops                | Type | Slack| (cycles)|    (ns)   |  Latency | Interval| Count| Pipelined|   BRAM   |    DSP   |     FF    |     LUT    | URAM|
+    +----------------------------------------+------+------+---------+-----------+----------+---------+------+----------+----------+----------+-----------+------------+-----+
+    |+ digit_mlp                             |     -|  0.00|    26242|  2.624e+05|         -|    26243|     -|        no|  35 (35%)|  18 (20%)|  2263 (5%)|  3379 (16%)|    -|
+    | + digit_mlp_Pipeline_VITIS_LOOP_10_1   |     -|  0.00|      787|  7.870e+03|         -|      787|     -|        no|         -|         -|   43 (~0%)|    83 (~0%)|    -|
+    |  o VITIS_LOOP_10_1                     |     -|  7.30|      785|  7.850e+03|         3|        1|   784|       yes|         -|         -|          -|           -|    -|
+    | + digit_mlp_Pipeline_VITIS_LOOP_30_4   |     -|  0.80|       18|    180.000|         -|       18|     -|        no|  16 (16%)|  17 (18%)|   691 (1%)|   1520 (7%)|    -|
+    |  o VITIS_LOOP_30_4                     |     -|  7.30|       16|    160.000|         8|        1|    10|       yes|         -|         -|          -|           -|    -|
+    | o VITIS_LOOP_16_2                      |     -|  7.30|    25408|  2.541e+05|       794|        -|    32|        no|         -|         -|          -|           -|    -|
+    |  + digit_mlp_Pipeline_VITIS_LOOP_18_3  |     -|  1.90|      789|  7.890e+03|         -|      789|     -|        no|  16 (16%)|    1 (1%)|  110 (~0%)|   144 (~0%)|    -|
+    |   o VITIS_LOOP_18_3                    |     -|  7.30|      787|  7.870e+03|         5|        1|   784|       yes|         -|         -|          -|           -|    -|
+    +----------------------------------------+------+------+---------+-----------+----------+---------+------+----------+----------+----------+-----------+------------+-----+
+
+
+================================================================
+== HW Interfaces
+================================================================
+* M_AXI
++------------+------------+---------------+---------+--------+----------+-----------+--------------+--------------+-------------+-------------+-------------------+
+| Interface  | Data Width | Address Width | Latency | Offset | Register | Max Widen | Max Read     | Max Write    | Num Read    | Num Write   | Resource Estimate |
+|            | (SW->HW)   |               |         |        |          | Bitwidth  | Burst Length | Burst Length | Outstanding | Outstanding |                   |
++------------+------------+---------------+---------+--------+----------+-----------+--------------+--------------+-------------+-------------+-------------------+
+| m_axi_gmem | 8 -> 8     | 64            | 0       | slave  | 0        | 0         | 16           | 16           | 16          | 16          | BRAM=2            |
++------------+------------+---------------+---------+--------+----------+-----------+--------------+--------------+-------------+-------------+-------------------+
+
+* S_AXILITE Interfaces
++---------------+------------+---------------+--------+----------+
+| Interface     | Data Width | Address Width | Offset | Register |
++---------------+------------+---------------+--------+----------+
+| s_axi_control | 32         | 6             | 24     | 0        |
++---------------+------------+---------------+--------+----------+
+
+* S_AXILITE Registers
++---------------+-----------+--------+-------+--------+----------------------------------+----------------------------------------------------------------------+
+| Interface     | Register  | Offset | Width | Access | Description                      | Bit Fields                                                           |
++---------------+-----------+--------+-------+--------+----------------------------------+----------------------------------------------------------------------+
+| s_axi_control | CTRL      | 0x00   | 32    | RW     | Control signals                  | 0=AP_START 1=AP_DONE 2=AP_IDLE 3=AP_READY 7=AUTO_RESTART 9=INTERRUPT |
+| s_axi_control | GIER      | 0x04   | 32    | RW     | Global Interrupt Enable Register | 0=Enable                                                             |
+| s_axi_control | IP_IER    | 0x08   | 32    | RW     | IP Interrupt Enable Register     | 0=CHAN0_INT_EN 1=CHAN1_INT_EN                                        |
+| s_axi_control | IP_ISR    | 0x0c   | 32    | RW     | IP Interrupt Status Register     | 0=CHAN0_INT_ST 1=CHAN1_INT_ST                                        |
+| s_axi_control | ap_return | 0x10   | 32    | R      | Data signal of ap_return         |                                                                      |
+| s_axi_control | img_1     | 0x18   | 32    | W      | Data signal of img               |                                                                      |
+| s_axi_control | img_2     | 0x1c   | 32    | W      | Data signal of img               |                                                                      |
++---------------+-----------+--------+-------+--------+----------------------------------+----------------------------------------------------------------------+
+
+* TOP LEVEL CONTROL
++-----------+------------+-----------+
+| Interface | Type       | Ports     |
++-----------+------------+-----------+
+| ap_clk    | clock      | ap_clk    |
+| ap_rst_n  | reset      | ap_rst_n  |
+| interrupt | interrupt  | interrupt |
+| ap_ctrl   | ap_ctrl_hs |           |
++-----------+------------+-----------+
+
+
+================================================================
+== SW I/O Information
+================================================================
+* Top Function Arguments
++----------+-----------+-----------------------+
+| Argument | Direction | Datatype              |
++----------+-----------+-----------------------+
+| img      | in        | unsigned char const * |
+| return   | out       | int                   |
++----------+-----------+-----------------------+
+
+* SW-to-HW Mapping
++----------+---------------+-----------+----------+-------------------------------------+
+| Argument | HW Interface  | HW Type   | HW Usage | HW Info                             |
++----------+---------------+-----------+----------+-------------------------------------+
+| img      | m_axi_gmem    | interface |          |                                     |
+| img      | s_axi_control | register  | offset   | name=img_1 offset=0x18 range=32     |
+| img      | s_axi_control | register  | offset   | name=img_2 offset=0x1c range=32     |
+| return   | s_axi_control | register  |          | name=ap_return offset=0x10 range=32 |
++----------+---------------+-----------+----------+-------------------------------------+
+
+
+================================================================
+== M_AXI Burst Information
+================================================================
+ Note: All burst requests might be further partitioned into multiple requests during RTL generation based on max_read_burst_length or max_write_burst_length settings.
+
+* Inferred Burst Summary
++--------------+-----------+--------+-------+-----------------+-------------------------------------+
+| HW Interface | Direction | Length | Width | Loop            | Loop Location                       |
++--------------+-----------+--------+-------+-----------------+-------------------------------------+
+| m_axi_gmem   | read      | 784    | 8     | VITIS_LOOP_10_1 | digitclassifier/digit_mlp.cpp:10:22 |
++--------------+-----------+--------+-------+-----------------+-------------------------------------+
+
+* All M_AXI Variable Accesses
++--------------+----------+-------------------------------------+-----------+--------------+--------+-----------------+-------------------------------------+------------+------------------------------------------------------------------------------------------------------+
+| HW Interface | Variable | Access Location                     | Direction | Burst Status | Length | Loop            | Loop Location                       | Resolution | Problem                                                                                              |
++--------------+----------+-------------------------------------+-----------+--------------+--------+-----------------+-------------------------------------+------------+------------------------------------------------------------------------------------------------------+
+| m_axi_gmem   | img      | digitclassifier/digit_mlp.cpp:12:11 | read      | Widen Fail   |        | VITIS_LOOP_10_1 | digitclassifier/digit_mlp.cpp:10:22 | 214-353    | Could not widen since type i8 size is greater than or equal to the max_widen_bitwidth threshold of 0 |
+| m_axi_gmem   | img      | digitclassifier/digit_mlp.cpp:12:11 | read      | Inferred     | 784    | VITIS_LOOP_10_1 | digitclassifier/digit_mlp.cpp:10:22 |            |                                                                                                      |
++--------------+----------+-------------------------------------+-----------+--------------+--------+-----------------+-------------------------------------+------------+------------------------------------------------------------------------------------------------------+
+
+    * Resolution URL: www.xilinx.com/cgi-bin/docs/rdoc?v=2023.1;t=hls+guidance;d=XXX-YYY.html (replace XXX-YYY with column value)
+
+================================================================
+== Bind Op Report
+================================================================
++---------------------------------------+-----+--------+-------------+-----+--------+---------+
+| Name                                  | DSP | Pragma | Variable    | Op  | Impl   | Latency |
++---------------------------------------+-----+--------+-------------+-----+--------+---------+
+| + digit_mlp                           | 18  |        |             |     |        |         |
+|   add_ln16_1_fu_567_p2                | -   |        | add_ln16_1  | add | fabric | 0       |
+|   add_ln16_fu_579_p2                  | -   |        | add_ln16    | add | fabric | 0       |
+|  + digit_mlp_Pipeline_VITIS_LOOP_10_1 | 0   |        |             |     |        |         |
+|    add_ln10_fu_98_p2                  | -   |        | add_ln10    | add | fabric | 0       |
+|  + digit_mlp_Pipeline_VITIS_LOOP_18_3 | 1   |        |             |     |        |         |
+|    add_ln18_fu_116_p2                 | -   |        | add_ln18    | add | fabric | 0       |
+|    add_ln20_fu_131_p2                 | -   |        | add_ln20    | add | fabric | 0       |
+|    mac_muladd_8s_8ns_26s_26_4_1_U4    | 1   |        | mul_ln20    | mul | dsp48  | 3       |
+|    mac_muladd_8s_8ns_26s_26_4_1_U4    | 1   |        | acc_1       | add | dsp48  | 3       |
+|  + digit_mlp_Pipeline_VITIS_LOOP_30_4 | 17  |        |             |     |        |         |
+|    add_ln30_fu_929_p2                 | -   |        | add_ln30    | add | fabric | 0       |
+|    mac_muladd_8s_7ns_15s_16_4_1_U35   | 1   |        | mul_ln33    | mul | dsp48  | 3       |
+|    mac_muladd_8s_7ns_15s_16_4_1_U36   | 1   |        | mul_ln33_1  | mul | dsp48  | 3       |
+|    mul_8s_7ns_15_1_1_U19              | -   |        | mul_ln33_2  | mul | auto   | 0       |
+|    mac_muladd_8s_7ns_15s_16_4_1_U37   | 1   |        | mul_ln33_3  | mul | dsp48  | 3       |
+|    mul_8s_7ns_15_1_1_U20              | -   |        | mul_ln33_4  | mul | auto   | 0       |
+|    mac_muladd_8s_7ns_15s_16_4_1_U38   | 1   |        | mul_ln33_5  | mul | dsp48  | 3       |
+|    mul_8s_7ns_15_1_1_U21              | -   |        | mul_ln33_6  | mul | auto   | 0       |
+|    mac_muladd_8s_7ns_15s_16_4_1_U39   | 1   |        | mul_ln33_7  | mul | dsp48  | 3       |
+|    mul_8s_7ns_15_1_1_U22              | -   |        | mul_ln33_8  | mul | auto   | 0       |
+|    mac_muladd_8s_7ns_15s_16_4_1_U40   | 1   |        | mul_ln33_9  | mul | dsp48  | 3       |
+|    mul_8s_7ns_15_1_1_U23              | -   |        | mul_ln33_10 | mul | auto   | 0       |
+|    mac_muladd_8s_7ns_15s_16_4_1_U41   | 1   |        | mul_ln33_11 | mul | dsp48  | 3       |
+|    mul_8s_7ns_15_1_1_U24              | -   |        | mul_ln33_12 | mul | auto   | 0       |
+|    mul_8s_7ns_15_1_1_U11              | -   |        | mul_ln33_13 | mul | auto   | 0       |
+|    mac_muladd_8s_7ns_16s_17_4_1_U42   | 1   |        | mul_ln33_14 | mul | dsp48  | 3       |
+|    mul_8s_7ns_15_1_1_U12              | -   |        | mul_ln33_15 | mul | auto   | 0       |
+|    mac_muladd_8s_7ns_15s_16_4_1_U26   | 1   |        | mul_ln33_16 | mul | dsp48  | 3       |
+|    mul_8s_7ns_15_1_1_U13              | -   |        | mul_ln33_17 | mul | auto   | 0       |
+|    mac_muladd_8s_7ns_15s_16_4_1_U27   | 1   |        | mul_ln33_18 | mul | dsp48  | 3       |
+|    mul_8s_7ns_15_1_1_U14              | -   |        | mul_ln33_19 | mul | auto   | 0       |
+|    mac_muladd_8s_7ns_15s_16_4_1_U28   | 1   |        | mul_ln33_20 | mul | dsp48  | 3       |
+|    mul_8s_7ns_15_1_1_U25              | -   |        | mul_ln33_21 | mul | auto   | 0       |
+|    mac_muladd_8s_7ns_15s_16_4_1_U29   | 1   |        | mul_ln33_22 | mul | dsp48  | 3       |
+|    mul_8s_7ns_15_1_1_U15              | -   |        | mul_ln33_23 | mul | auto   | 0       |
+|    mac_muladd_8s_7ns_15s_16_4_1_U30   | 1   |        | mul_ln33_24 | mul | dsp48  | 3       |
+|    mul_8s_7ns_15_1_1_U16              | -   |        | mul_ln33_25 | mul | auto   | 0       |
+|    mac_muladd_8s_7ns_15s_16_4_1_U31   | 1   |        | mul_ln33_26 | mul | dsp48  | 3       |
+|    mul_8s_7ns_15_1_1_U17              | -   |        | mul_ln33_27 | mul | auto   | 0       |
+|    mac_muladd_8s_7ns_15s_16_4_1_U32   | 1   |        | mul_ln33_28 | mul | dsp48  | 3       |
+|    mac_muladd_8s_7ns_11s_16_4_1_U33   | 1   |        | mul_ln33_29 | mul | dsp48  | 3       |
+|    mul_8s_7ns_15_1_1_U18              | -   |        | mul_ln33_30 | mul | auto   | 0       |
+|    mac_muladd_8s_7ns_15s_16_4_1_U34   | 1   |        | mul_ln33_31 | mul | dsp48  | 3       |
+|    mac_muladd_8s_7ns_11s_16_4_1_U33   | 1   |        | add_ln33    | add | dsp48  | 3       |
+|    mac_muladd_8s_7ns_15s_16_4_1_U32   | 1   |        | add_ln33_1  | add | dsp48  | 3       |
+|    add_ln33_2_fu_1533_p2              | -   |        | add_ln33_2  | add | fabric | 0       |
+|    mac_muladd_8s_7ns_15s_16_4_1_U30   | 1   |        | add_ln33_3  | add | dsp48  | 3       |
+|    mac_muladd_8s_7ns_15s_16_4_1_U31   | 1   |        | add_ln33_4  | add | dsp48  | 3       |
+|    add_ln33_5_fu_1549_p2              | -   |        | add_ln33_5  | add | fabric | 0       |
+|    add_ln33_6_fu_1559_p2              | -   |        | add_ln33_6  | add | fabric | 0       |
+|    mac_muladd_8s_7ns_15s_16_4_1_U26   | 1   |        | add_ln33_7  | add | dsp48  | 3       |
+|    mac_muladd_8s_7ns_15s_16_4_1_U27   | 1   |        | add_ln33_8  | add | dsp48  | 3       |
+|    add_ln33_9_fu_1571_p2              | -   |        | add_ln33_9  | add | fabric | 0       |
+|    mac_muladd_8s_7ns_15s_16_4_1_U28   | 1   |        | add_ln33_10 | add | dsp48  | 3       |
+|    mac_muladd_8s_7ns_15s_16_4_1_U29   | 1   |        | add_ln33_11 | add | dsp48  | 3       |
+|    add_ln33_12_fu_1587_p2             | -   |        | add_ln33_12 | add | fabric | 0       |
+|    add_ln33_13_fu_1597_p2             | -   |        | add_ln33_13 | add | fabric | 0       |
+|    add_ln33_14_fu_1612_p2             | -   |        | add_ln33_14 | add | fabric | 0       |
+|    mac_muladd_8s_7ns_15s_16_4_1_U35   | 1   |        | add_ln33_15 | add | dsp48  | 3       |
+|    mac_muladd_8s_7ns_15s_16_4_1_U36   | 1   |        | add_ln33_16 | add | dsp48  | 3       |
+|    add_ln33_17_fu_1624_p2             | -   |        | add_ln33_17 | add | fabric | 0       |
+|    mac_muladd_8s_7ns_15s_16_4_1_U37   | 1   |        | add_ln33_18 | add | dsp48  | 3       |
+|    mac_muladd_8s_7ns_15s_16_4_1_U38   | 1   |        | add_ln33_19 | add | dsp48  | 3       |
+|    add_ln33_20_fu_1640_p2             | -   |        | add_ln33_20 | add | fabric | 0       |
+|    add_ln33_21_fu_1650_p2             | -   |        | add_ln33_21 | add | fabric | 0       |
+|    mac_muladd_8s_7ns_15s_16_4_1_U39   | 1   |        | add_ln33_22 | add | dsp48  | 3       |
+|    mac_muladd_8s_7ns_15s_16_4_1_U40   | 1   |        | add_ln33_23 | add | dsp48  | 3       |
+|    add_ln33_24_fu_1662_p2             | -   |        | add_ln33_24 | add | fabric | 0       |
+|    mac_muladd_8s_7ns_15s_16_4_1_U41   | 1   |        | add_ln33_25 | add | dsp48  | 3       |
+|    mac_muladd_8s_7ns_15s_16_4_1_U34   | 1   |        | add_ln33_26 | add | dsp48  | 3       |
+|    mac_muladd_8s_7ns_16s_17_4_1_U42   | 1   |        | add_ln33_27 | add | dsp48  | 3       |
+|    add_ln33_28_fu_1678_p2             | -   |        | add_ln33_28 | add | fabric | 0       |
+|    add_ln33_29_fu_1688_p2             | -   |        | add_ln33_29 | add | fabric | 0       |
++---------------------------------------+-----+--------+-------------+-----+--------+---------+
+
+
+================================================================
+== Bind Storage Report
+================================================================
++---------------------------------------+------+------+--------+----------+---------+------+---------+
+| Name                                  | BRAM | URAM | Pragma | Variable | Storage | Impl | Latency |
++---------------------------------------+------+------+--------+----------+---------+------+---------+
+| + digit_mlp                           | 35   | 0    |        |          |         |      |         |
+|   buf_U                               | 1    | -    |        | buf      | ram_1p  | auto | 1       |
+|   h8_U                                | -    | -    |        | h8       | ram_s2p | auto | 1       |
+|   B1_U                                | -    | -    |        | B1       | rom_1p  | auto | 1       |
+|  + digit_mlp_Pipeline_VITIS_LOOP_18_3 | 16   | 0    |        |          |         |      |         |
+|    W1_U                               | 16   | -    |        | W1       | rom_1p  | auto | 1       |
+|  + digit_mlp_Pipeline_VITIS_LOOP_30_4 | 16   | 0    |        |          |         |      |         |
+|    B2_U                               | -    | -    |        | B2       | rom_1p  | auto | 1       |
+|    W2_U                               | 16   | -    |        | W2       | rom_np  | auto | 1       |
++---------------------------------------+------+------+--------+----------+---------+------+---------+
+
+
+================================================================
+== Pragma Report
+================================================================
+* Valid Pragma Syntax
++-----------+---------------------------------------------------+------------------------------------------------------+
+| Type      | Options                                           | Location                                             |
++-----------+---------------------------------------------------+------------------------------------------------------+
+| interface | m_axi port=img offset=slave bundle=gmem depth=784 | digitclassifier/digit_mlp.cpp:5 in digit_mlp, img    |
+| interface | s_axilite port=img                                | digitclassifier/digit_mlp.cpp:6 in digit_mlp, img    |
+| interface | s_axilite port=return                             | digitclassifier/digit_mlp.cpp:7 in digit_mlp, return |
+| pipeline  | II=1                                              | digitclassifier/digit_mlp.cpp:11 in digit_mlp        |
+| pipeline  | II=1                                              | digitclassifier/digit_mlp.cpp:19 in digit_mlp        |
++-----------+---------------------------------------------------+------------------------------------------------------+
+
+

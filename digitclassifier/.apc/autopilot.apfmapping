@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<autopilotfilemapping:AutoPilotFileMapping xmlns:autopilotfilemapping="www.autoesl.com/autopilotfilemapping">
+  <source>
+    <originFiles name="digit_mlp.cpp" path="C:\HLS\digitclassifier\digitclassifier\digit_mlp.cpp"/>
+  </source>
+  <testbench>
+    <originFiles name="digit_mlp_tb.cpp" path="C:\HLS\digitclassifier\digitclassifier\digit_mlp_tb.cpp"/>
+    <originFiles name="test_set.bin" path="C:\HLS\digitclassifier\digitclassifier\test_set.bin"/>
+  </testbench>
+</autopilotfilemapping:AutoPilotFileMapping>

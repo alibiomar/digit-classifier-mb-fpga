@@ -332,9 +332,10 @@ inputs. For a maintainable GitHub repository, consider keeping:
 - MicroBlaze application sources;
 - Python clients and small test assets.
 
-Generated reports, caches, temporary directories, and machine-local absolute
-paths should normally be regenerated or parameterized rather than treated as
-portable source.
+The root [`.gitignore`](.gitignore) excludes generated reports, caches,
+temporary directories, hardware binaries, credentials, and machine-local
+build products. It intentionally keeps source inputs, demo images, test
+vectors, constraints, and the checked-in utilization reports.
 
 ## License and attribution
 
