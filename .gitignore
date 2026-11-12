@@ -91,7 +91,6 @@ project_vivado/project_vivado.srcs/utils_1/
 !modelTrain/test_set.bin
 
 # Local demo recordings and generated previews
-test/testVideo.mp4
 test/sent.png
 
 # Keep project documentation and checked-in measurement reports.
